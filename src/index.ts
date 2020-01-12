@@ -39,7 +39,7 @@ class Prism<T = any> {
     this.warnings = warnings
   }
 
-  public transform (fn: (prism: Prism) => unknown): Prism {
+  public transform<C = unknown> (fn: (prism: Prism<T>) => C): Prism<C> {
     try {
       return this._child(fn(this), [])
     } catch (error) {
@@ -48,7 +48,7 @@ class Prism<T = any> {
     }
   }
 
-  public transformValue (fn: (value: unknown) => unknown): Prism {
+  public transformValue<C = unknown> (fn: (value: T) => C): Prism<C> {
     return this.transform((self) => fn(self.value))
   }
 

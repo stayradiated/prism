@@ -84,7 +84,9 @@ class Prism<T = any> {
 
   public toArray (): Prism<T[keyof T]>[] {
     if (!Array.isArray(this.value)) {
-      this.warn('not an array')
+      if (this.value != null) {
+        this.warn('not an array')
+      }
       return []
     }
     return this.value.map((item, key) => {

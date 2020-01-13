@@ -108,12 +108,3 @@ test('prism.transform should have access to the prism', (t) => {
   t.deepEqual(output.warnings, [])
   t.is(output.value, 'HELLO WORLD')
 })
-
-/* method: transformValue */
-
-test('prism.transformValue should change the value', (t) => {
-  const input = new Prism('hello world')
-  const output = input.transformValue((value: string) => value.toUpperCase())
-  t.deepEqual(output.warnings, [])
-  t.is(output.value, 'HELLO WORLD')
-})

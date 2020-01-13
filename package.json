@@ -9,6 +9,7 @@
   "scripts": {
     "test": "pkg-test",
     "build": "pkg-build",
+    "docs": "pkg-docs",
     "tidy": "pkg-tidy",
     "lint": "pkg-lint"
   },
@@ -17,7 +18,7 @@
     "error-stack-parser": "2.0.6"
   },
   "devDependencies": {
-    "@stayradiated/pkg": "3.8.0",
+    "@stayradiated/pkg": "3.11.0",
     "@types/node": "12.12.24"
   }
 }

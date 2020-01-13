@@ -3,6 +3,9 @@ import ErrorStackParser from 'error-stack-parser'
 
 import { Warning, Path } from './types'
 
+/**
+ * @ignore
+ */
 const formatPath = (path: Path): string => {
   return path
     .map((item, index) => {
@@ -19,6 +22,9 @@ const formatPath = (path: Path): string => {
     .join('')
 }
 
+/**
+ * @ignore
+ */
 const formatSource = (error: Error) => {
   const stackFrame = ErrorStackParser.parse(error).find((stackFrame) => {
     return stackFrame.fileName.includes('@zwolf/prism') === false

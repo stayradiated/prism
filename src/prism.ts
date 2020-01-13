@@ -1,10 +1,5 @@
 import { Path, PathKey, Warning } from './types'
-
-const isUndefined = (value: any) => typeof value === 'undefined'
-
-interface GetOptions {
-  quiet?: boolean,
-}
+import { isUndefined } from './is-undefined'
 
 class Prism<T = any> {
   public readonly path: Path
@@ -32,7 +27,10 @@ class Prism<T = any> {
     }
   }
 
-  public get<C = any> (key: PathKey, options: GetOptions = {}): Prism<C> {
+  public get<C = any> (
+    key: PathKey,
+    options: { quiet?: boolean } = {},
+  ): Prism<C> {
     const { quiet } = options
 
     if (!this.exists) {

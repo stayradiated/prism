@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import ErrorStackParser, { StackFrame } from 'error-stack-parser'
+import ErrorStackParser from 'error-stack-parser'
 
 import { Warning, Path } from './types'
 
@@ -19,9 +19,17 @@ const formatPath = (path: Path): string => {
     .join('')
 }
 
-const formatSource = (stackFrame: StackFrame) => {
+const formatSource = (error: Error) => {
+  const stackFrame = ErrorStackParser.parse(error).find((stackFrame) => {
+    return stackFrame.fileName.includes('@zwolf/prism') === false
+  })
+
   const { fileName, lineNumber, columnNumber } = stackFrame
-  return `${chalk.gray('at ')}${chalk.greenBright(fileName)}${chalk.gray(':')}${chalk.yellowBright(lineNumber)}${chalk.gray(':')}${chalk.blueBright(columnNumber)}`
+  return `${chalk.gray('at ')}${chalk.greenBright(fileName)}${chalk.gray(
+    ':',
+  )}${chalk.yellowBright(lineNumber)}${chalk.gray(':')}${chalk.blueBright(
+    columnNumber,
+  )}`
 }
 
 const printWarnings = (warnings: Warning[], root = 'root') => {
@@ -29,12 +37,12 @@ const printWarnings = (warnings: Warning[], root = 'root') => {
     const { path, error } = warning
 
     const formattedPath = formatPath(path)
-
-    const stackFrames = ErrorStackParser.parse(error)
-    const source = formatSource(stackFrames[0])
+    const source = formatSource(error)
 
     console.warn(
-      `${chalk.redBright('Warning:')} ${chalk.blueBright(root)}${formattedPath} ${chalk.redBright(error)} ${source}`,
+      `${chalk.redBright('Warning:')} ${chalk.blueBright(
+        root,
+      )}${formattedPath} ${chalk.redBright(error.message)} ${source}`,
     )
   }
 }

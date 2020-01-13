@@ -1,14 +1,4 @@
 {
-  "scripts": {
-    "test": "pkg-test",
-    "build": "pkg-build",
-    "tidy": "pkg-tidy",
-    "lint": "pkg-lint"
-  },
-  "devDependencies": {
-    "@stayradiated/pkg": "3.8.0",
-    "@types/node": "^12.0.0"
-  },
   "name": "@zwolf/prism",
   "version": "2.5.0",
   "description": "Read-only lens for safely parsing data, with a built-in warning system.",
@@ -16,8 +6,18 @@
   "repository": "https://github.com/stayradiated/prism",
   "author": "George Czabania",
   "license": "MIT",
-  "private": false,
+  "scripts": {
+    "test": "pkg-test",
+    "build": "pkg-build",
+    "tidy": "pkg-tidy",
+    "lint": "pkg-lint"
+  },
   "dependencies": {
-    "ansi-styles": "4.2.1"
+    "chalk": "3.0.0",
+    "error-stack-parser": "2.0.6"
+  },
+  "devDependencies": {
+    "@stayradiated/pkg": "3.8.0",
+    "@types/node": "12.12.24"
   }
 }

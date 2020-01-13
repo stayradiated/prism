@@ -1,4 +1,5 @@
-import style from 'ansi-styles'
+import chalk from 'chalk'
+import ErrorStackParser, { StackFrame } from 'error-stack-parser'
 
 import { Warning, Path } from './types'
 
@@ -8,22 +9,32 @@ const formatPath = (path: Path): string => {
       const isLast = index === path.length - 1
 
       if (typeof item === 'number') {
-        const color = isLast ? style.green : style.gray
-        return `${style.gray.open}[${color.open}${item}${style.gray.open}]${style.gray.close}`
+        const color = isLast ? chalk.green : chalk.gray
+        return `${chalk.gray('[')}${color(item)}${chalk.gray(']')}`
       } else {
-        const color = isLast ? style.blue : style.gray
-        return `${style.gray.open}.${color.open}${item}${color.close}`
+        const color = isLast ? chalk.blue : chalk.gray
+        return `${chalk.gray('.')}${color(item)}`
       }
     })
     .join('')
 }
 
+const formatSource = (stackFrame: StackFrame) => {
+  const { fileName, lineNumber, columnNumber } = stackFrame
+  return `${chalk.gray('at ')}${chalk.greenBright(fileName)}${chalk.gray(':')}${chalk.yellowBright(lineNumber)}${chalk.gray(':')}${chalk.blueBright(columnNumber)}`
+}
+
 const printWarnings = (warnings: Warning[], root = 'root') => {
   for (const warning of warnings) {
-    const { path, message } = warning
+    const { path, error } = warning
+
     const formattedPath = formatPath(path)
+
+    const stackFrames = ErrorStackParser.parse(error)
+    const source = formatSource(stackFrames[0])
+
     console.warn(
-      `${style.redBright.open}Warning:${style.redBright.close} ${style.blueBright.open}${root}${style.blueBright.close}${formattedPath} ${style.redBright.open}${message}${style.redBright.close}`,
+      `${chalk.redBright('Warning:')} ${chalk.blueBright(root)}${formattedPath} ${chalk.redBright(error)} ${source}`,
     )
   }
 }

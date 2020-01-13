@@ -27,7 +27,7 @@ class Prism<T = any> {
     try {
       return this._child(fn(this), [])
     } catch (error) {
-      this.warn(error.message)
+      this.warn(error)
       return this._child(undefined, [])
     }
   }
@@ -37,14 +37,14 @@ class Prism<T = any> {
 
     if (!this.exists) {
       if (!quiet) {
-        this.warn(`value is undefined. Cannot get key: "${key}"`)
+        this.warn(new Error(`value is undefined. Cannot get key: "${key}"`))
       }
       return this._child(undefined, [key])
     }
 
     if (this.value == null) {
       if (!quiet) {
-        this.warn(`value is null. Cannot get key: "${key}"`)
+        this.warn(new Error(`value is null. Cannot get key: "${key}"`))
       }
       return this._child(undefined, [key])
     }
@@ -52,7 +52,7 @@ class Prism<T = any> {
     const nextValue = ((this.value as unknown) as Record<PathKey, C>)[key]
 
     if (!quiet && isUndefined(nextValue)) {
-      this.warn(`value is undefined.`, [key])
+      this.warn(new Error(`value is undefined.`), [key])
     }
 
     return this._child(nextValue, [key])
@@ -65,7 +65,9 @@ class Prism<T = any> {
   public toArray (): Prism<T[keyof T]>[] {
     if (!Array.isArray(this.value)) {
       if (this.value != null) {
-        this.warn('value is not an array, but was expected to be one')
+        this.warn(
+          new Error('value is not an array, but was expected to be one'),
+        )
       }
       return []
     }
@@ -74,8 +76,11 @@ class Prism<T = any> {
     })
   }
 
-  public warn (message: string, path: Path = []) {
-    this.warnings.push({ path: [...this.path, ...path], message })
+  public warn (error: Error, path: Path = []) {
+    this.warnings.push({
+      error,
+      path: [...this.path, ...path],
+    })
   }
 }
 

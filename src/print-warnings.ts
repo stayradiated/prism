@@ -8,22 +8,22 @@ const formatPath = (path: Path): string => {
       const isLast = index === path.length - 1
 
       if (typeof item === 'number') {
-        const color = isLast ? style.greenBright : style.gray
+        const color = isLast ? style.green : style.gray
         return `${style.gray.open}[${color.open}${item}${style.gray.open}]${style.gray.close}`
       } else {
-        const color = isLast ? style.blueBright : style.gray
+        const color = isLast ? style.blue : style.gray
         return `${style.gray.open}.${color.open}${item}${color.close}`
       }
     })
     .join('')
 }
 
-const printWarnings = (warnings: Warning[]) => {
+const printWarnings = (warnings: Warning[], root = 'root') => {
   for (const warning of warnings) {
     const { path, message } = warning
     const formattedPath = formatPath(path)
     console.warn(
-      `${style.redBright.open}Warning:${style.redBright.close} ${formattedPath} ${style.redBright.open}${message}${style.redBright.close}`,
+      `${style.redBright.open}Warning:${style.redBright.close} ${style.blueBright.open}${root}${style.blueBright.close}${formattedPath} ${style.redBright.open}${message}${style.redBright.close}`,
     )
   }
 }

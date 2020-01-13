@@ -1,15 +1,9 @@
-export type PathKey = string | number
-export type Path = PathKey[]
+import { Path, PathKey, Warning } from './types'
 
 const isUndefined = (value: any) => typeof value === 'undefined'
 
 interface GetOptions {
   quiet?: boolean,
-}
-
-export interface Warning {
-  path: Path,
-  message: string,
 }
 
 class Prism<T = any> {

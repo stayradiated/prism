@@ -16,5 +16,8 @@
   "repository": "https://github.com/stayradiated/prism",
   "author": "George Czabania",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "ansi-styles": "4.2.1"
+  }
 }

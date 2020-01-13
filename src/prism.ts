@@ -37,14 +37,14 @@ class Prism<T = any> {
 
     if (!this.exists) {
       if (!quiet) {
-        this.warn(`Value is undefined. Cannot get key: "${key}"`)
+        this.warn(`value is undefined. Cannot get key: "${key}"`)
       }
       return this._child(undefined, [key])
     }
 
     if (this.value == null) {
       if (!quiet) {
-        this.warn(`Value is null. Cannot get key: "${key}"`)
+        this.warn(`value is null. Cannot get key: "${key}"`)
       }
       return this._child(undefined, [key])
     }
@@ -52,7 +52,7 @@ class Prism<T = any> {
     const nextValue = ((this.value as unknown) as Record<PathKey, C>)[key]
 
     if (!quiet && isUndefined(nextValue)) {
-      this.warn(`Value is undefined.`, [key])
+      this.warn(`value is undefined.`, [key])
     }
 
     return this._child(nextValue, [key])
@@ -65,7 +65,7 @@ class Prism<T = any> {
   public toArray (): Prism<T[keyof T]>[] {
     if (!Array.isArray(this.value)) {
       if (this.value != null) {
-        this.warn('not an array')
+        this.warn('value is not an array, but was expected to be one')
       }
       return []
     }

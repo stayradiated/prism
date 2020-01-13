@@ -1,6 +1,6 @@
 {
   "name": "@zwolf/prism",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Read-only lens for safely parsing data, with a built-in warning system.",
   "main": "./dist/index.js",
   "repository": "https://github.com/stayradiated/prism",

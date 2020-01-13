@@ -1,20 +1,5 @@
-type PathKey = string | number
-type Path = PathKey[]
-
-const formatPath = (path: Path): string => {
-  return (
-    'root' +
-    path
-      .map((item) => {
-        if (typeof item === 'number') {
-          return `[${item}]`
-        } else {
-          return `.${item}`
-        }
-      })
-      .join('')
-  )
-}
+export type PathKey = string | number
+export type Path = PathKey[]
 
 const isUndefined = (value: any) => typeof value === 'undefined'
 
@@ -22,17 +7,22 @@ interface GetOptions {
   quiet?: boolean,
 }
 
+export interface Warning {
+  path: Path,
+  message: string,
+}
+
 class Prism<T = any> {
   public readonly path: Path
   public readonly value: T
   public readonly exists: boolean
-  public readonly warnings: string[]
+  public readonly warnings: Warning[]
 
   private _child (value: any, path: Path) {
     return new Prism(value, [...this.path, ...path], this.warnings)
   }
 
-  public constructor (value: T, path: Path = [], warnings: string[] = []) {
+  public constructor (value: T, path: Path = [], warnings: Warning[] = []) {
     this.exists = !isUndefined(value)
     this.path = path
     this.value = value
@@ -91,7 +81,7 @@ class Prism<T = any> {
   }
 
   public warn (message: string, path: Path = []) {
-    this.warnings.push(`${formatPath([...this.path, ...path])}: ${message}`)
+    this.warnings.push({ path: [...this.path, ...path], message })
   }
 }
 

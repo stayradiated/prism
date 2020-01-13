@@ -65,7 +65,7 @@ test('prism.get should have a value to equal to the key', (t) => {
 test('prism.get should handle values that do not exist', (t) => {
   const p = new Prism({})
   const a = p.get('a')
-  t.deepEqual(a.warnings, ['root.a: Value is undefined.'])
+  t.deepEqual(a.warnings, [{ path: ['a'], message: 'Value is undefined.' }])
   t.is(a.value, undefined)
   t.false(a.exists)
 })
@@ -86,7 +86,9 @@ test('prism.get should handle a broken chain', (t) => {
     .get('a')
     .get('b')
     .get('c')
-  t.deepEqual(c.warnings, ['root.a.b.c: Value is undefined.'])
+  t.deepEqual(c.warnings, [
+    { path: ['a', 'b', 'c'], message: 'Value is undefined.' },
+  ])
   t.is(c.value, undefined)
   t.false(c.exists)
 })

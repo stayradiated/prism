@@ -1,4 +1,4 @@
-# Prism
+![PRISM](./prism.png)
 
 > Read only lens for safely parsing objects, with a built-in warning system
 

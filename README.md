@@ -1,10 +1,25 @@
 ![PRISM](./prism.png)
 
-> Read only lens for safely parsing objects, with a built-in warning system
+> A library for safely parsing 3rd party API data
 
-[*API Documentation*](https://stayradiated.github.io/prism)
+## API Documentation
 
-### Todo
+You can find the generated docs at https://stayradiated.github.io/prism
 
-- [ ] Explain why anyone would want to use this over any of the many other lens
-  libraries on NPM
+## Why would I use this?
+
+- 
+
+## Why would I _not_ use this?
+
+-
+
+## Examples
+
+###
+
+###
+
+## License
+
+Prism is licensed under the [MIT License](./LICENSE.md).

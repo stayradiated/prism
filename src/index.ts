@@ -1,4 +1,7 @@
-export * from './print-warnings'
-export * from './transformers'
-export * from './types'
-export { default } from './prism'
+import { Prism } from './prism.js'
+
+export * from './print-warnings.js'
+export * from './transformers.js'
+export * from './types.js'
+export { Prism }
+export default Prism

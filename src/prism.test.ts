@@ -1,22 +1,22 @@
 import test from 'ava'
 
-import Prism from './index'
+import { Prism } from './index.js'
 
-/* property: value */
+/* Property: value */
 
 test('prism.value should match input value', (t) => {
   const p = new Prism({ a: 1 })
   t.deepEqual(p.value, { a: 1 })
 })
 
-/* property: path */
+/* Property: path */
 
 test('prism.path should default to []', (t) => {
   const p = new Prism({ a: 1 })
   t.deepEqual(p.path, [])
 })
 
-/* property: exists */
+/* Property: exists */
 
 test('prism.exists should be true if value is not undefined', (t) => {
   const p = new Prism({ a: 1 })
@@ -33,7 +33,7 @@ test('prism.exists should be false if value is undefined', (t) => {
   t.false(p.exists)
 })
 
-/* property: warnings */
+/* Property: warnings */
 
 test('prism.warnings should be empty by default', (t) => {
   const p = new Prism({})
@@ -45,7 +45,7 @@ test('prism should not warn on undefined values', (t) => {
   t.deepEqual(p.warnings, [])
 })
 
-/* method: get */
+/* Method: get */
 
 test('prism.get should return a new prism', (t) => {
   const p = new Prism({ a: 1 })
@@ -84,10 +84,7 @@ test('prism.get should get a chain of keys', (t) => {
 
 test('prism.get should handle a broken chain', (t) => {
   const p = new Prism({ a: { b: {} } })
-  const c = p
-    .get('a')
-    .get('b')
-    .get('c')
+  const c = p.get('a').get('b').get('c')
   t.deepEqual(c.warnings, [
     { path: ['a', 'b', 'c'], error: new Error('value is undefined.') },
   ])
@@ -95,7 +92,7 @@ test('prism.get should handle a broken chain', (t) => {
   t.false(c.exists)
 })
 
-/* method: transform */
+/* Method: transform */
 
 test('prism.transform should change the value', (t) => {
   const input = new Prism('hello')
@@ -106,9 +103,7 @@ test('prism.transform should change the value', (t) => {
 
 test('prism.transform should have access to the prism', (t) => {
   const input = new Prism('hello world')
-  const output = input.transform((p) => {
-    return p.value.toUpperCase()
-  })
+  const output = input.transform((p) => p.value?.toUpperCase())
   t.deepEqual(output.warnings, [])
   t.is(output.value, 'HELLO WORLD')
 })

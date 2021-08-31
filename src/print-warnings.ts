@@ -1,34 +1,43 @@
 import chalk from 'chalk'
 import ErrorStackParser from 'error-stack-parser'
 
-import { Warning, Path } from './types'
+import type { Warning, Path } from './types.js'
 
 /**
  * @ignore
  */
-const formatPath = (path: Path): string => {
-  return path
+const formatPath = (path: Path): string =>
+  path
     .map((item, index) => {
       const isLast = index === path.length - 1
 
       if (typeof item === 'number') {
         const color = isLast ? chalk.green : chalk.gray
         return `${chalk.gray('[')}${color(item)}${chalk.gray(']')}`
-      } else {
-        const color = isLast ? chalk.blue : chalk.gray
-        return `${chalk.gray('.')}${color(item)}`
       }
+
+      const color = isLast ? chalk.blue : chalk.gray
+      return `${chalk.gray('.')}${color(item)}`
     })
     .join('')
-}
 
 /**
  * @ignore
  */
-const formatSource = (error: Error) => {
+const formatSource = (error: Error): string => {
   const stackFrame = ErrorStackParser.parse(error).find((stackFrame) => {
-    return stackFrame.fileName.includes('@zwolf/prism') === false
+    if (
+      typeof stackFrame.fileName === 'string' &&
+      stackFrame.fileName.includes('@zwolf/prism')
+    ) {
+      return false
+    }
+
+    return true
   })
+  if (!stackFrame) {
+    return 'Unknown source.'
+  }
 
   const { fileName, lineNumber, columnNumber } = stackFrame
   return `${chalk.gray('at ')}${chalk.greenBright(fileName)}${chalk.gray(

@@ -1,18 +1,20 @@
-import Prism from './index'
+import Prism from './index.js'
 
 export type Transformer<C, T> = (prism: Prism<T>) => C
 
-const asValue = <C, T>(fn: (value: T) => C): Transformer<C, T> => {
-  return (prism) => fn(prism.value)
-}
+const asValue =
+  <C, T>(fn: (value: T | undefined) => C): Transformer<C, T> =>
+  (prism) =>
+    fn(prism.value)
 
-const defaultTo = <T>(defaultValue: T): Transformer<T, T> => {
-  return (prism) => {
+const defaultTo =
+  <V>(defaultValue: V): Transformer<V, V> =>
+  (prism) => {
     if (prism.exists) {
-      return prism.value
+      return prism.value!
     }
+
     return defaultValue
   }
-}
 
 export { asValue, defaultTo }

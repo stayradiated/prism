@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import { printWarnings } from './print-warnings'
+import { printWarnings } from './print-warnings.js'
 
 test('simple', (t) => {
   printWarnings([{ path: ['x'], error: new Error('does not exist') }])

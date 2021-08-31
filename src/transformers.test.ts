@@ -1,20 +1,18 @@
 import test from 'ava'
 
-import Prism from './index'
-import { asValue, defaultTo } from './transformers'
+import { asValue, defaultTo } from './transformers.js'
+import Prism from './index.js'
 
-/* asValue */
+/* AsValue */
 
 test('prism.transform(asValue(...)) should change the value', (t) => {
   const input = new Prism('hello world')
-  const output = input.transform(
-    asValue((value: string) => value.toUpperCase()),
-  )
+  const output = input.transform(asValue((value) => value?.toUpperCase()))
   t.deepEqual(output.warnings, [])
   t.is(output.value, 'HELLO WORLD')
 })
 
-/* defaultTo */
+/* DefaultTo */
 
 test('prism.transform(defaultTo(...)) should use the default value if the property does not exist', (t) => {
   const input = new Prism({})

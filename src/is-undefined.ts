@@ -1,8 +1,6 @@
 /**
  * @ignore
  */
-const isUndefined = (value: any) => {
-  return typeof value === 'undefined'
-}
+const isUndefined = (value: any) => typeof value === 'undefined'
 
 export { isUndefined }

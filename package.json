@@ -4,7 +4,7 @@
   "description": "Read-only lens for safely parsing data, with a built-in warning system.",
   "type": "module",
   "exports": "./dist/index.js",
-  "types": "./dist/index.ts",
+  "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stayradiated/prism.git"

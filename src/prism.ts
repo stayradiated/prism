@@ -4,22 +4,20 @@ import type { Path, PathKey, Warning } from './types.js'
 
 class Prism<T = any> {
   public readonly path: Path
-  public readonly value: T | undefined
+  public readonly value: T
   public readonly exists: boolean
   public readonly warnings: Warning[]
 
-  public constructor(
-    value: T | undefined,
-    path: Path = [],
-    warnings: Warning[] = [],
-  ) {
+  public constructor(value: T, path: Path = [], warnings: Warning[] = []) {
     this.exists = !isUndefined(value)
     this.path = path
     this.value = value
     this.warnings = warnings
   }
 
-  public transform<C = unknown>(fn: (prism: Prism<T>) => C): Prism<C> {
+  public transform<C = unknown>(
+    fn: (prism: Prism<T>) => C,
+  ): Prism<C | undefined> {
     try {
       return this._child<C>(fn(this), [])
     } catch (error: unknown) {
@@ -27,14 +25,14 @@ class Prism<T = any> {
         this.warn(error)
       }
 
-      return this._child<C>(undefined, [])
+      return this._child(undefined, [])
     }
   }
 
   public get<C = any>(
     key: PathKey,
     options: { quiet?: boolean } = {},
-  ): Prism<C> {
+  ): Prism<C | undefined> {
     const { quiet } = options
 
     if (!this.exists) {
@@ -42,7 +40,7 @@ class Prism<T = any> {
         this.warn(new Error(`value is undefined. Cannot get key: "${key}"`))
       }
 
-      return this._child<C>(undefined, [key])
+      return this._child(undefined, [key])
     }
 
     if (this.value === null || this.value === undefined) {
@@ -50,7 +48,7 @@ class Prism<T = any> {
         this.warn(new Error(`value is null. Cannot get key: "${key}"`))
       }
 
-      return this._child<C>(undefined, [key])
+      return this._child(undefined, [key])
     }
 
     const nextValue = (this.value as unknown as Record<PathKey, C>)[key]
@@ -87,7 +85,7 @@ class Prism<T = any> {
     })
   }
 
-  private _child<T>(value: T | undefined, path: Path): Prism<T> {
+  private _child<T>(value: T, path: Path): Prism<T> {
     return new Prism(value, [...this.path, ...path], this.warnings)
   }
 }

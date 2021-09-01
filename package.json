@@ -1,6 +1,6 @@
 {
   "name": "@zwolf/prism",
-  "version": "2.10.1",
+  "version": "2.11.0",
   "description": "Read-only lens for safely parsing data, with a built-in warning system.",
   "type": "module",
   "exports": "./dist/index.js",

@@ -1,12 +1,15 @@
-import chalk from 'chalk'
+import Chalk from 'chalk'
 import ErrorStackParser from 'error-stack-parser'
 
 import type { Warning, Path } from './types.js'
 
+const chalkNoColor = new Chalk.Instance({ level: 0 })
+const chalkColor = new Chalk.Instance({ level: 1 })
+
 /**
  * @ignore
  */
-const formatPath = (path: Path): string =>
+const formatPath = (path: Path, chalk: Chalk.Chalk): string =>
   path
     .map((item, index) => {
       const isLast = index === path.length - 1
@@ -24,7 +27,7 @@ const formatPath = (path: Path): string =>
 /**
  * @ignore
  */
-const formatSource = (error: Error): string => {
+const formatSource = (error: Error, chalk: Chalk.Chalk): string => {
   const stackFrame = ErrorStackParser.parse(error).find((stackFrame) => {
     if (
       typeof stackFrame.fileName === 'string' &&
@@ -47,19 +50,24 @@ const formatSource = (error: Error): string => {
   )}`
 }
 
-const printWarnings = (warnings: Warning[], root = 'root') => {
-  for (const warning of warnings) {
-    const { path, error } = warning
+const formatWarnings = (warnings: Warning[], root = 'root', color: boolean = false): string => {
+  const chalk = color ? chalkColor : chalkNoColor
+  return warnings
+    .map((warning) => {
+      const { path, error } = warning
 
-    const formattedPath = formatPath(path)
-    const source = formatSource(error)
+      const formattedPath = formatPath(path, chalk)
+      const source = formatSource(error, chalk)
 
-    console.warn(
-      `${chalk.redBright('Warning:')} ${chalk.blueBright(
+      return `${chalk.redBright('Warning:')} ${chalk.blueBright(
         root,
-      )}${formattedPath} ${chalk.redBright(error.message)} ${source}`,
-    )
-  }
+      )}${formattedPath} ${chalk.redBright(error.message)} ${source}`
+    })
+    .join('\n')
 }
 
-export { printWarnings }
+const printWarnings = (warnings: Warning[], root?: string): void => {
+  console.warn(formatWarnings(warnings, root, true))
+}
+
+export { formatWarnings, printWarnings }

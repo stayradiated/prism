@@ -64,7 +64,7 @@ class Prism<T = any> {
     return this.get(key, { quiet: true }).exists
   }
 
-  public toArray(): Array<Prism<T[keyof T]>> {
+  public toArray(): Array<Prism<T extends (infer U)[] ? U : never>> {
     if (!Array.isArray(this.value)) {
       if (this.value !== null && this.value !== undefined) {
         this.warn(
@@ -75,7 +75,7 @@ class Prism<T = any> {
       return []
     }
 
-    return this.value.map((item, key) => this._child<T[keyof T]>(item, [key]))
+    return this.value.map((item, key) => this._child<T extends (infer U)[] ? U : never>(item, [key]))
   }
 
   public warn(error: Error, path: Path = []) {
